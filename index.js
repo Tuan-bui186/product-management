@@ -3,11 +3,14 @@ require("dotenv").config();
 const route = require("./routes/client/index.route");
 const database = require("./config/database");
 const routeAdmin = require("./routes/admin/index.route");
+const systemConfig = require("./config/system");
 
 database.connect();
 
 const app = express();
 const port = process.env.PORT;
+
+app.locals.prefixAdmin = systemConfig.prefixAmin;
 
 app.set("views", "./views");
 app.set("view engine", "pug");
