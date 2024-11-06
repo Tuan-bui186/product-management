@@ -24,6 +24,8 @@ module.exports.product = async (req, res) => {
     const index = filter.findIndex((item) => item.status == req.query.status);
     filter[index].class = "active";
   } else {
+    const index = filter.findIndex((item) => item.status == "");
+    filter[index].class = "active";
   }
 
   let find = {
