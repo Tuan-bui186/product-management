@@ -1,6 +1,7 @@
 const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
+const paginationHelper = require("../../helpers/pagination");
 
 // [Get] /admin/products
 module.exports.product = async (req, res) => {
@@ -19,25 +20,19 @@ module.exports.product = async (req, res) => {
     find.status = req.query.status;
   }
 
-  const objectPagination = {
-    currentPage: 1,
-    limitItem: 4,
-  };
-
-  if (req.query.page) {
-    objectPagination.currentPage = parseInt(req.query.page);
-  }
-
-  objectPagination.skip =
-    (objectPagination.currentPage - 1) * objectPagination.limitItem;
+  const countProduct = await Product.countDocuments(find);
+  const objectPagination = paginationHelper(
+    {
+      currentPage: 1,
+      limitItem: 4,
+    },
+    req.query,
+    countProduct
+  );
 
   const product = await Product.find(find)
     .limit(objectPagination.limitItem)
     .skip(objectPagination.skip);
-
-  const countProduct = await Product.countDocuments(find);
-  const totalPage = Math.ceil(countProduct / objectPagination.limitItem);
-  objectPagination.totalPage = totalPage;
 
   res.render("admin/pages/products/index.pug", {
     pageTitle: "Danh sach san pham",
