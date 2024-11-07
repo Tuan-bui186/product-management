@@ -1,5 +1,6 @@
 const Product = require("../../models/product.model");
 const filterStatusHelper = require("../../helpers/filterStatus");
+const searchHelper = require("../../helpers/search");
 
 // [Get] /admin/products
 module.exports.product = async (req, res) => {
@@ -9,13 +10,10 @@ module.exports.product = async (req, res) => {
     deleted: false,
   };
 
-  let keyword = "";
+  let objectSearch = searchHelper(req.query);
 
-  if (req.query.keyword) {
-    keyword = req.query.keyword;
-    const regex = new RegExp(keyword, "i");
-
-    find.title = regex;
+  if (objectSearch.keyword) {
+    find.title = objectSearch.regex;
   }
 
   if (req.query.status) {
@@ -28,6 +26,6 @@ module.exports.product = async (req, res) => {
     pageTitle: "Danh sach san pham",
     product: product,
     filter: filter,
-    keyword: keyword,
+    keyword: objectSearch.keyword,
   });
 };
