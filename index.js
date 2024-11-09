@@ -6,6 +6,9 @@ const database = require("./config/database");
 const routeAdmin = require("./routes/admin/index.route");
 const systemConfig = require("./config/system");
 const bodyParser = require("body-parser");
+const flash = require("express-flash");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
 
 database.connect();
 
@@ -22,6 +25,10 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 
 app.use(express.static("public"));
+
+app.use(cookieParser("TUANBUI"));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
 
 route(app);
 routeAdmin(app);
