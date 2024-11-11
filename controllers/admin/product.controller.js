@@ -1,4 +1,5 @@
 const Product = require("../../models/product.model");
+const systemConfig = require("../../config/system");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
@@ -44,7 +45,7 @@ module.exports.product = async (req, res) => {
   });
 };
 
-// [Patch] /admin/product/change-status/:status/:id
+// [Patch] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
   const status = req.params.status;
   const id = req.params.id;
@@ -53,7 +54,7 @@ module.exports.changeStatus = async (req, res) => {
   res.redirect("back");
 };
 
-// [Patch] /admin/product/change-multi
+// [Patch] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
   const type = req.body.type;
   const ids = req.body.ids.split(", ");
@@ -71,6 +72,7 @@ module.exports.changeMulti = async (req, res) => {
         { _id: { $in: ids } },
         { deleted: true, deletedAt: new Date() }
       );
+      req.flash("success", "Xóa sản phẩm thành công!");
       break;
     case "change-position":
       for (const item of ids) {
@@ -78,6 +80,7 @@ module.exports.changeMulti = async (req, res) => {
         position = parseInt(position);
         await Product.updateOne({ _id: id }, { position: position });
       }
+      req.flash("success", "Thay đổi vị trí thành công!");
       break;
     default:
       break;
@@ -85,12 +88,36 @@ module.exports.changeMulti = async (req, res) => {
   res.redirect("back");
 };
 
-// [delete] /admin/product/delete/:id
+// [delete] /admin/products/delete/:id
 module.exports.delete = async (req, res) => {
   const id = req.params.id;
   await Product.updateOne(
     { _id: id },
     { deleted: true, deletedAt: new Date() }
   );
+  req.flash("success", "Xóa sản phẩm thành công!");
   res.redirect("back");
+};
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+  res.render("admin/pages/products/create.pug", {
+    pageTitle: "thêm mới sản phẩm",
+  });
+};
+
+// [Post] /admin/products/create
+module.exports.createPost = async (req, res) => {
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  if (req.body.position == "") {
+    const countPosition = await Product.countDocuments();
+    req.body.position = countPosition + 1;
+  } else {
+    req.body.position = parseInt(req.body.position);
+  }
+  const product = new Product(req.body);
+  await product.save();
+  res.redirect(`${systemConfig.prefixAmin}/products`);
 };
