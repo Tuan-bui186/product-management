@@ -108,11 +108,6 @@ module.exports.create = async (req, res) => {
 
 // [Post] /admin/products/create
 module.exports.createPost = async (req, res) => {
-  if (!req.body.title) {
-    req.flash("error", "Vui lòng nhập tiêu đề");
-    res.redirect("back");
-    return;
-  }
   req.body.price = parseInt(req.body.price);
   req.body.discountPercentage = parseInt(req.body.discountPercentage);
   req.body.stock = parseInt(req.body.stock);
@@ -128,4 +123,39 @@ module.exports.createPost = async (req, res) => {
   const product = new Product(req.body);
   await product.save();
   res.redirect(`${systemConfig.prefixAmin}/products`);
+};
+
+module.exports.edit = async (req, res) => {
+  try {
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
+    const product = await Product.findOne(find);
+
+    res.render("admin/pages/products/edit.pug", {
+      pageTitle: "chỉnh sửa sản phẩm",
+      product: product,
+    });
+  } catch (error) {
+    res.redirect(`${systemConfig.prefixAmin}/products`);
+  }
+};
+
+module.exports.editPatch = async (req, res) => {
+  req.body.price = parseInt(req.body.price);
+  req.body.discountPercentage = parseInt(req.body.discountPercentage);
+  req.body.stock = parseInt(req.body.stock);
+  req.body.position = parseInt(req.body.position);
+  if (req.file) {
+    req.body.thumbnail = `/uploads/${req.file.filename}`;
+  }
+  try {
+    await Product.updateOne({ _id: req.params.id }, req.body);
+    req.flash("success", "Chỉnh sửa sản phẩm thành công!");
+  } catch (error) {
+    req.flash("error", "Chỉnh sửa sản phẩm thất bại!");
+  }
+
+  res.redirect("back");
 };
