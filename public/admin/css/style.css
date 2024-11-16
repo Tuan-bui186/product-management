@@ -65,3 +65,16 @@
     display: none;
   }
 }
+
+.image-preview {
+  width: 150px;
+  height: auto;
+  margin-top: 15px;
+  border: 1px solid #202020;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+.image-preview[src=""] {
+  display: none;
+}
