@@ -1,4 +1,5 @@
 const express = require("express");
+var path = require("path");
 const methodOverride = require("method-override");
 require("dotenv").config();
 const route = require("./routes/client/index.route");
@@ -25,6 +26,10 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 app.use(express.static(`${__dirname}/public`));
+app.use(
+  "/tinymce",
+  express.static(path.join(__dirname, "node_modules", "tinymce"))
+);
 
 app.use(cookieParser("TUANBUI"));
 app.use(session({ cookie: { maxAge: 60000 } }));
