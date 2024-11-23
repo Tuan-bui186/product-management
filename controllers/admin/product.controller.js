@@ -3,6 +3,8 @@ const systemConfig = require("../../config/system");
 const filterStatusHelper = require("../../helpers/filterStatus");
 const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
+const createTreeHelper = require("../../helpers/createTree");
+const ProductCategory = require("../../models/products-category.model");
 
 // [Get] /admin/products
 module.exports.product = async (req, res) => {
@@ -108,8 +110,15 @@ module.exports.delete = async (req, res) => {
 
 // [GET] /admin/products/create
 module.exports.create = async (req, res) => {
+  let find = {
+    deleted: false,
+  };
+
+  const category = await ProductCategory.find(find);
+  const newCategory = createTreeHelper.tree(category);
   res.render("admin/pages/products/create.pug", {
     pageTitle: "thêm mới sản phẩm",
+    category: newCategory,
   });
 };
 
