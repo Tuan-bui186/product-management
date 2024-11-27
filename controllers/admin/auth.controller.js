@@ -3,9 +3,13 @@ const Account = require("../../models/accounts");
 const systemConfig = require("../../config/system");
 
 module.exports.login = async (req, res) => {
-  res.render("admin/pages/auth/login.pug", {
-    pageTitle: "Trang đăng nhập",
-  });
+  if (req.cookies.token) {
+    res.redirect(`${systemConfig.prefixAmin}/dashboard`);
+  } else {
+    res.render("admin/pages/auth/login.pug", {
+      pageTitle: "Trang đăng nhập",
+    });
+  }
 };
 
 module.exports.loginPost = async (req, res) => {
