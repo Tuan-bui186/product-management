@@ -3,35 +3,37 @@ include ../../mixins/table.pug
 
 block main
 
-    h1 Danh mục sản phẩm
+    if(role.permissions.includes("products-category-view"))
+        h1 Danh mục sản phẩm
 
-    .card.mb-3
-        .card-header Danh sách
-        .card-body
-            .row
-                .col-8
-                .col-4 
-                    a(
-                        href=`${prefixAdmin}/products-category/create`
-                        class ="btn btn-outline-success mb-3"
-                    ) + Thêm mới
+        .card.mb-3
+            .card-header Danh sách
+            .card-body
+                .row
+                    .col-8
+                    .col-4 
+                        if(role.permissions.includes("products-category-create"))
+                            a(
+                                href=`${prefixAdmin}/products-category/create`
+                                class ="btn btn-outline-success mb-3"
+                            ) + Thêm mới
 
-                table(
-                    class="table table-hover table-sm"
-                    checkbox-multi
-                )
-                    thead 
-                        tr 
-                            th
-                                input(type="checkbox" name="checkall")
-                            th STT
-                            th Hình ảnh 
-                            th Tiêu đề 
-                            th Vị trí
-                            th Trạng thái 
-                            th Hoạt động
-                    tbody 
-                        +table-tree(records)
+                    table(
+                        class="table table-hover table-sm"
+                        checkbox-multi
+                    )
+                        thead 
+                            tr 
+                                th
+                                    input(type="checkbox" name="checkall")
+                                th STT
+                                th Hình ảnh 
+                                th Tiêu đề 
+                                th Vị trí
+                                th Trạng thái 
+                                th Hoạt động
+                        tbody 
+                            +table-tree(records)
 
 
-  
+    
