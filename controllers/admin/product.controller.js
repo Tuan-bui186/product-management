@@ -5,6 +5,7 @@ const searchHelper = require("../../helpers/search");
 const paginationHelper = require("../../helpers/pagination");
 const createTreeHelper = require("../../helpers/createTree");
 const ProductCategory = require("../../models/products-category.model");
+const Account = require("../../models/accounts");
 
 // [Get] /admin/products
 module.exports.product = async (req, res) => {
@@ -40,14 +41,23 @@ module.exports.product = async (req, res) => {
     sort.position = "desc";
   }
 
-  const product = await Product.find(find)
+  const products = await Product.find(find)
     .sort(sort)
     .limit(objectPagination.limitItem)
     .skip(objectPagination.skip);
 
+  for (const product of products) {
+    const user = await Account.findOne({
+      _id: product.createBy.account_id,
+    });
+    if (user) {
+      product.accountFullName = user.fullname;
+    }
+  }
+
   res.render("admin/pages/products/index.pug", {
     pageTitle: "Danh sach san pham",
-    product: product,
+    product: products,
     filter: filter,
     keyword: objectSearch.keyword,
     pagination: objectPagination,
@@ -79,7 +89,10 @@ module.exports.changeMulti = async (req, res) => {
     case "delete-all":
       await Product.updateMany(
         { _id: { $in: ids } },
-        { deleted: true, deletedAt: new Date() }
+        {
+          deleted: true,
+          deleteBY: { account_id: res.locals.user.id, deleteAt: new Date() },
+        }
       );
       req.flash("success", "Xóa sản phẩm thành công!");
       break;
@@ -102,7 +115,13 @@ module.exports.delete = async (req, res) => {
   const id = req.params.id;
   await Product.updateOne(
     { _id: id },
-    { deleted: true, deletedAt: new Date() }
+    {
+      deleted: true,
+      deleteBY: {
+        account_id: res.locals.user.id,
+        deleteAt: new Date(),
+      },
+    }
   );
   req.flash("success", "Xóa sản phẩm thành công!");
   res.redirect("back");
@@ -133,6 +152,11 @@ module.exports.createPost = async (req, res) => {
   } else {
     req.body.position = parseInt(req.body.position);
   }
+
+  req.body.createBy = {
+    account_id: res.locals.user.id,
+  };
+
   const product = new Product(req.body);
   await product.save();
   res.redirect(`${systemConfig.prefixAmin}/products`);

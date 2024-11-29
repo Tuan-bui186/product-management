@@ -10,6 +10,7 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const moment = require("moment");
 
 database.connect();
 
@@ -21,6 +22,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 const port = process.env.PORT;
 
 app.locals.prefixAdmin = systemConfig.prefixAmin;
+app.locals.moment = moment;
 
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
