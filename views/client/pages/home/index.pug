@@ -3,11 +3,18 @@ include ../../mixins/box-head.pug
 include ../../mixins/product-layout.pug
 
 block main 
-  h1 Trang chủ
+  .section-products-featured.my-5
+    .container.my-3
+      .row
+        .col-12
+          +box-head("Sản phẩm nổi bật")
 
-  .container.my-3
-    .row
-      .col-12
-        +box-head("Sản phẩm nổi bật")
+      +product-grid(productFeatured)
 
-    +product-grid(productFeatured)
+  .section-products-featured.my-5
+    .container.my-3
+      .row
+        .col-12
+          +box-head("Sản phẩm mới nhất")
+
+      +product-grid(productNew)
