@@ -52,6 +52,20 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
   cursor: pointer;
+  height: 100%;
+}
+
+.product-item .inner-image {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.product-item .inner-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .product-item:hover {
@@ -76,6 +90,17 @@
   transform: scale(1.03);
 }
 
+.product-item .inner-featured {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: green;
+  color: white;
+  padding: 3px 6px;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+}
 /* Nội dung sản phẩm */
 .inner-content {
   padding: 8px;
@@ -83,9 +108,10 @@
 }
 
 .inner-title {
-  font-size: 0.9em;
-  color: #333;
+  font-size: 25px;
+  color: green;
   margin: 6px 0;
+  padding-bottom: 10px;
 }
 
 .inner-price-new {
