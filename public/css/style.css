@@ -166,3 +166,66 @@
 .sub-menu ul li:hover > ul {
   display: block;
 }
+
+.product-detail .inner-thumb img {
+  max-width: 100%;
+  height: auto; /* Đảm bảo hình ảnh không vượt quá khung chứa */
+}
+
+.product-detail .row {
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
+}
+
+.product-detail .col-md-6 {
+  flex: 1; /* Đảm bảo cả hai cột có chiều cao đồng đều */
+  display: flex;
+  justify-content: center; /* Căn giữa theo chiều ngang */
+  flex-direction: column; /* Cột bên phải giữ nguyên hướng dọc */
+}
+
+.product-detail .inner-thumb img {
+  max-width: 100%; /* Đảm bảo không vượt khung */
+  height: auto; /* Giữ tỷ lệ gốc */
+  display: block;
+  margin: auto; /* Căn giữa hình ảnh */
+}
+
+.product-detail .inner-title {
+  font-size: 2rem; /* Chỉnh kích thước tiêu đề */
+  margin-bottom: 15px;
+}
+
+.product-detail .inner-category,
+.product-detail .inner-price-new,
+.product-detail .inner-price-old,
+.product-detail .inner-percent,
+.product-detail .inner-stock {
+  margin-bottom: 10px; /* Thêm khoảng cách giữa các dòng */
+}
+
+.product-detail button.btn {
+  width: 100%; /* Đảm bảo nút chiếm toàn chiều rộng */
+  padding: 10px 20px; /* Tăng kích thước nút */
+  font-size: 1rem;
+}
+
+/* Tiêu đề phần mô tả sản phẩm */
+.product-detail .box-head {
+  font-size: 1.8rem; /* Kích thước lớn hơn để nổi bật */
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333; /* Màu sắc dễ đọc */
+}
+
+/* Phần mô tả sản phẩm */
+.product-detail .inner-description {
+  font-size: 1rem; /* Kích thước chữ vừa phải */
+  line-height: 1.6; /* Dãn cách dòng để dễ đọc */
+  color: #555; /* Màu chữ xám đậm */
+  background-color: #f9f9f9; /* Nền nhẹ giúp phân biệt */
+  padding: 15px; /* Thêm khoảng cách trong khung */
+  border-radius: 8px; /* Bo góc nhẹ cho phần mô tả */
+  border: 1px solid #ddd; /* Thêm viền để nổi bật */
+  max-width: 100%; /* Đảm bảo không tràn khung */
+}
