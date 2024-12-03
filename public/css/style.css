@@ -229,3 +229,82 @@
   border: 1px solid #ddd; /* Thêm viền để nổi bật */
   max-width: 100%; /* Đảm bảo không tràn khung */
 }
+
+/* Cấu trúc chung cho các thông báo */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  display: inline-block;
+  position: relative;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  animation: slide-in 0.6s ease-in-out, fade-out 1s ease-in-out forwards;
+  animation-delay: 0s, var(--alert-delay, 5s); /* Thời gian mặc định: 5s */
+}
+
+/* Thông báo thành công */
+.alert-success {
+  color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+}
+
+/* Thông báo lỗi */
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+/* Vị trí hiển thị */
+.message.info {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1050;
+  width: 300px;
+}
+
+/* Hiệu ứng xuất hiện từ góc phải */
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Hiệu ứng ẩn dần */
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+/* Thời gian mặc định để ẩn thông báo */
+.alert[show-alert] {
+  --alert-delay: 3s; /* 3 giây trước khi ẩn */
+}
+
+/* Nút đóng (tùy chọn) */
+.alert .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  font-weight: bold;
+  color: inherit;
+  cursor: pointer;
+}
