@@ -6,9 +6,9 @@ block main
     .container.my-5
         .row.justify-content-center
             .col-8
-                h1(class = "text-center") Đăng nhập tài khoản
+                h1(class = "text-center")  Nhập mã OTP xác thực
                 form(
-                    action =  `/user/login`
+                    action =  `/user/password/otp`
                     method = "POST"
                 )
                     div(class = "form-group")
@@ -18,14 +18,15 @@ block main
                             name = "email"
                             id = "email"
                             class = "form-control"
-                            required
+                            value = email
+                            readonly
                         )
                     div(class = "form-group")
-                        label(for = "password") Mật khẩu
+                        label(for = "otp") OTP
                         input(
-                            type = "password"
-                            name = "password"
-                            id = "password"
+                            type = "text"
+                            name = "otp"
+                            id = "otp"
                             class = "form-control"
                             required
                         )
@@ -33,5 +34,4 @@ block main
                         button(
                             class = "btn btn-primary btn-block"
                             type = "submit"
-                        ) Đăng nhập
-                a(href = `/user/password/forgot`) Quên mật khẩu?
+                        ) Xác nhận
